@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
+use App\Traits\ControllerUtilities;
 
 class NewsController extends Controller
 {
+    use ControllerUtilities;
+
     /**
      * Display a listing of the resource.
      *

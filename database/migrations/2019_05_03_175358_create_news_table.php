@@ -17,6 +17,7 @@ class CreateNewsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('category_id');
             $table->string('title');
+            $table->string('slug');
             $table->text('body');
             $table->text('event')->nullable();
             $table->text('location')->nullable();

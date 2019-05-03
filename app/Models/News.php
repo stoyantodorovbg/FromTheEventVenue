@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AccessedViaSlugAttribute;
 
 class News extends Model
 {
+    use AccessedViaSlugAttribute;
+
     /**
      * @var array
      */

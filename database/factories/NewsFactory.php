@@ -9,6 +9,7 @@ $factory->define(News::class, function (Faker $faker) {
     return [
         'category_id' => factory(\App\Models\Category::class)->create()->id,
         'title' => $faker->sentence,
+        'slug' => $faker->word,
         'body' => $faker->paragraph,
         'event' => $faker->sentence,
         'location' => $faker->sentence,
