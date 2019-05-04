@@ -2,21 +2,21 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Models\News;
-use Illuminate\Support\Str;
+use App\Models\Archivednews;
 use Faker\Generator as Faker;
 
-$factory->define(News::class, function (Faker $faker) {
-    $title = $faker->unique()->sentence;
-
+$factory->define(Archivednews::class, function (Faker $faker) {
     return [
         'category_id' => function() {
             return factory(\App\Models\Category::class)->create()->id;
         },
-        'title' => $faker->unique()->sentence,
-        'slug' => Str::slug($title, '-'),
+        'deletecriteria_id' => function() {
+            return factory(\App\Models\Deletecriteria::class)->create()->id;
+        },
+        'title' => $faker->sentence,
         'body' => $faker->paragraph,
         'event' => $faker->sentence,
         'location' => $faker->sentence,
+        'note' => $faker->sentence,
     ];
 });
