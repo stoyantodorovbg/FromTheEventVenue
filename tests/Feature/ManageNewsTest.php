@@ -46,6 +46,30 @@ class ManageNewsTest extends TestCase
     }
 
     /** @test */
+    public function the_news_requires_an_unique_title()
+    {
+        factory(News::class)->create([
+            'title' => 'test title'
+        ]);
+
+        $news_data = [
+            'news' => [
+                [
+                    'category_id' => factory(Category::class)->create()->id,
+                    'title' => 'test title',
+                    'body' => 'test',
+                ],
+            ],
+        ];
+
+        $this->post(route('news.store'), $news_data)
+            ->assertStatus(302)
+            ->assertSessionHasErrors('news.0.title');
+
+        $this->assertCount(1, News::all());
+    }
+
+    /** @test */
     public function the_news_requires_a_body()
     {
         $news_data = [

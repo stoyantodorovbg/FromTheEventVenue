@@ -23,8 +23,10 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
+        $category_id = $this->isMethod('PATCH') ? $this->route('category')->id : '';
+
         return [
-            'title' => 'required|string|max:255'
+            'title' => 'required|string|max:255|unique:categories,title,' . $category_id,
         ];
     }
 }

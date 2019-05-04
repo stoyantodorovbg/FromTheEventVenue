@@ -3,13 +3,16 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use App\Models\News;
+use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(News::class, function (Faker $faker) {
+    $title = $faker->unique()->sentence;
+
     return [
         'category_id' => factory(\App\Models\Category::class)->create()->id,
-        'title' => $faker->sentence,
-        'slug' => $faker->word,
+        'title' => $faker->unique()->sentence,
+        'slug' => Str::slug($title, '-'),
         'body' => $faker->paragraph,
         'event' => $faker->sentence,
         'location' => $faker->sentence,

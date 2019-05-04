@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Category;
 use Tests\TestCase;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -48,6 +48,19 @@ class ManageCategoryTest extends TestCase
     }
 
     /** @test */
+    public function the_category_requires_an_unique_title()
+    {
+        factory(Category::class)->create([
+            'title' => 'test title'
+        ]);
+
+        $this->post(route('categories.store'), [
+            'title' => 'test title',
+        ])->assertStatus(302)
+            ->assertSessionHasErrors(['title']);
+    }
+
+    /** @test */
     public function the_validation_prevents_category_title_lenght_greater_then_256_characters()
     {
         $this->withExceptionHandling();
@@ -63,12 +76,28 @@ class ManageCategoryTest extends TestCase
         $category = factory(Category::class)->create();
 
         $this->patch(route('categories.update', $category->slug), [
+            'title' => $category->title,
+        ])->assertStatus(200);
+
+        $this->patch(route('categories.update', $category->slug), [
             'title' => 'Updated Category Title',
         ])->assertStatus(200);
 
         $this->assertDatabaseHas('categories', [
             'title' => 'Updated Category Title',
         ]);
+    }
+
+    /** @test */
+    public function the_category_can_be_updated_only_with_unique_title()
+    {
+        $first_category = factory(Category::class)->create();
+        $second_category = factory(Category::class)->create();
+
+        $this->patch(route('categories.update', $second_category->slug), [
+            'title' => $first_category->title,
+        ])->assertStatus(302)
+            ->assertSessionHasErrors('title');
     }
 
     /** @test */
