@@ -38,11 +38,14 @@ class NewsController extends Controller
      */
     public function store(NewsRequest $request)
     {
+        $news = [];
+
         foreach ($request->validated()['news'] as $news_data) {
             $news_data = $this->generateSlug($news_data, 'title');
-            News::create($news_data);
+            $news[] = News::create($news_data);
         }
 
+        return response($news, 200);
     }
 
     /**
@@ -76,7 +79,11 @@ class NewsController extends Controller
      */
     public function update(NewsRequest $request, News $news)
     {
-        //
+        $data = $this->generateSlug($request->validated()['news'][0], 'title');
+
+        $news->update($data);
+
+        return response($news, 200);
     }
 
     /**

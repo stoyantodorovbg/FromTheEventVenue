@@ -22,7 +22,7 @@ class CategoryController extends Controller
 
         $category = Category::create($data);
 
-        return response($category->body, 200);
+        return response(['category' => $category], 200);
     }
 
     /**
@@ -38,7 +38,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return response($category->body, 200);
+        return response(['category' => $category], 200);
     }
 
     /**

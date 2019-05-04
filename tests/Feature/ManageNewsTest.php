@@ -14,6 +14,17 @@ class ManageNewsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function create_one_news()
+    {
+        $all_news = [];
+
+        $all_news['news'][] = factory(News::class)->make()->toArray();
+
+        $this->post(route('news.store'), $all_news)->assertStatus(200);
+        $this->assertCount(1, News::all());
+    }
+
+    /** @test */
     public function create_many_news()
     {
         $all_news = [];
@@ -108,6 +119,7 @@ class ManageNewsTest extends TestCase
 
         $this->assertCount(0, News::all());
     }
+
     /** @test */
     public function the_news_requires_a_valid_category_id()
     {
@@ -126,5 +138,59 @@ class ManageNewsTest extends TestCase
             ->assertSessionHasErrors('news.0.category_id');
 
         $this->assertCount(0, News::all());
+    }
+
+    /** @test */
+    public function the_news_can_be_updated()
+    {
+        $news = factory(News::class)->create();
+
+        $news_data = [
+            'news' => [
+                [
+                    'category_id' => $news->category_id,
+                    'title' => $news->title,
+                    'body' => 'Updated news body',
+                    'event' => 'Updated event',
+                    'location' => 'Updated location',
+                ],
+            ],
+        ];
+
+        $this->patch(route('news.update', $news->slug), $news_data)
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('news', [
+            'body' => 'Updated news body',
+            'event' => 'Updated event',
+            'location' => 'Updated location',
+        ]);
+    }
+
+    /** @test */
+    public function the_category_can_be_updated_only_with_unique_title()
+    {
+        $first_news = factory(News::class)->create();
+        $second_news = factory(News::class)->create();
+
+        $news_data = [
+            'news' => [
+                [
+                    'category_id' => $second_news->category_id,
+                    'title' => $first_news->title,
+                    'body' => 'Updated news body',
+                    'event' => $second_news->event,
+                    'location' => $second_news->location,
+                ],
+            ],
+        ];
+
+        $this->patch(route('news.update', $second_news->slug), $news_data)
+            ->assertStatus(302)
+            ->assertSessionHasErrors('news.0.title');
+
+        $this->assertDatabaseMissing('news', [
+            'body' => 'Updated news body',
+        ]);
     }
 }
