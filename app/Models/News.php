@@ -14,4 +14,17 @@ class News extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * Prepare data for Archivednews creation
+     *
+     * @param array $data
+     */
+    public function archive(array $data): void
+    {
+        $data = array_merge($data, $this->toArray());
+        unset($data['slug']);
+
+        Archivednews::create($data);
+    }
 }

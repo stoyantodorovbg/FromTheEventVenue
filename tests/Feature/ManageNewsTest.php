@@ -6,6 +6,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\News;
 use App\Models\Category;
+use App\Models\Deletecriteria;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -168,7 +169,7 @@ class ManageNewsTest extends TestCase
     }
 
     /** @test */
-    public function the_category_can_be_updated_only_with_unique_title()
+    public function the_news_can_be_updated_only_with_unique_title()
     {
         $first_news = factory(News::class)->create();
         $second_news = factory(News::class)->create();
@@ -191,6 +192,51 @@ class ManageNewsTest extends TestCase
 
         $this->assertDatabaseMissing('news', [
             'body' => 'Updated news body',
+        ]);
+    }
+
+    /** @test */
+    public function the_news_can_be_deleted_by_criteria()
+    {
+        $deletecriteria = factory(Deletecriteria::class)->create();
+        $news = factory(News::class)->create();
+
+        $this->delete(route('news.destroy', $news->slug), [
+            'deletecriteria_id' => $deletecriteria->id,
+            'note' => 'Fake news.',
+        ])->assertStatus(200);
+
+        $this->assertDatabaseMissing('news', [
+            'title' => $news->title,
+        ]);
+
+        $this->assertDatabaseHas('archivednews', [
+            'title' => $news->title,
+            'body' => $news->body,
+            'deletecriteria_id' => $deletecriteria->id,
+            'note' => 'Fake news.',
+        ]);
+    }
+
+    /** @test */
+    public function the_news_can_not_be_deleted_by_unexisting_criteria()
+    {
+        $news = factory(News::class)->create();
+
+        $this->delete(route('news.destroy', $news->slug), [
+            'deletecriteria_id' => 1,
+            'note' => 'Fake news.',
+        ])->assertStatus(302)
+            ->assertSessionHasErrors('deletecriteria_id');
+
+        $this->assertDatabaseHas('news', [
+            'title' => $news->title,
+        ]);
+
+        $this->assertDatabaseMissing('archivednews', [
+            'title' => $news->title,
+            'body' => $news->body,
+            'note' => 'Fake news.',
         ]);
     }
 }

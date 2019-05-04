@@ -10,6 +10,11 @@ class Archivednews extends Model
     use HasCategory;
 
     /**
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
      * The delete criteria for this news
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

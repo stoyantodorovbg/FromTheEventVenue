@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Http\Requests\NewsRequest;
 use App\Traits\ControllerUtilities;
+use App\Http\Requests\DestroyNewsRequest;
 
 class NewsController extends Controller
 {
@@ -87,13 +88,18 @@ class NewsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage
      *
-     * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\Response
+     * @param DestroyNewsRequest $requestNews
+     * @param News $news
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy(News $news)
+    public function destroy(DestroyNewsRequest $requestNews, News $news)
     {
-        //
+        $news->archive($requestNews->validated());
+        $news->delete();
+
+        return response('News deleted', 200);
     }
 }
