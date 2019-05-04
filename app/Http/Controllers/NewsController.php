@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
-use Illuminate\Http\Request;
+use App\Http\Requests\NewsRequest;
 use App\Traits\ControllerUtilities;
 
 class NewsController extends Controller
@@ -33,12 +33,16 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  NewsRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsRequest $request)
     {
-        //
+        foreach ($request->validated()['news'] as $news_data) {
+            $news_data = $this->generateSlug($news_data, 'title');
+            News::create($news_data);
+        }
+
     }
 
     /**
@@ -66,11 +70,11 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  NewsRequest  $request
      * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(NewsRequest $request, News $news)
     {
         //
     }

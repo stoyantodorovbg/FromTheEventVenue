@@ -43,7 +43,8 @@ class ManageCategoryTest extends TestCase
     {
         $this->post(route('categories.store'), [
             'title' => '',
-        ])->assertSessionHasErrors(['title']);
+        ])->assertStatus(302)
+            ->assertSessionHasErrors(['title']);
     }
 
     /** @test */
@@ -52,7 +53,8 @@ class ManageCategoryTest extends TestCase
         $this->withExceptionHandling();
         $this->post(route('categories.store'), [
             'title' => Str::random(256),
-        ])->assertSessionHasErrors(['title']);
+        ])->assertStatus(302)
+            ->assertSessionHasErrors(['title']);
     }
 
     /** @test */
