@@ -23,4 +23,14 @@ class Category extends Model
     {
         return $this->hasMany(News::class);
     }
+
+    /**
+     * The archived news from this category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function archivednews()
+    {
+        return $this->hasMany(Archivednews::class);
+    }
 }
