@@ -5,8 +5,10 @@
 @section('content')
     <div>
         <div class="row justify-content-center">
-            <div class="col-md-12">
-
+            <div class="col-12">
+                <h1 class="text-center">
+                    FROM THE EVENT VENUE
+                </h1>
             </div>
         </div>
     </div>

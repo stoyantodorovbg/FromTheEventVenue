@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\News;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,7 +19,11 @@ class FetchNewsTest extends TestCase
     {
         $news = factory(News::class, 10)->create();
 
-        $response = $this->get(route('news.index'));
+        $response = $this->get(route('news.index'))
+            ->assertStatus(200)
+            ->assertSee($news[0]->title)
+            ->assertSee(Str::limit($news[1]->body, 200, '...'))
+            ->assertSee($news[2]->created_at->diffForHumans());
 
         $this->assertEquals($news->count(), $response->original->getData()['news']->count());
     }
@@ -29,12 +34,16 @@ class FetchNewsTest extends TestCase
         factory(News::class, 10)->create();
 
         $searched_category = Category::find(1);
+        $searched_news = $searched_category->news;
 
         $response = $this->post(route('news.search'), [
             'category_id' => $searched_category->id,
-        ]);
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
 
-        $this->assertEquals($searched_category->news->count(), $response->original->getData()['news']->count());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
     }
 
     /** @test */
@@ -50,13 +59,16 @@ class FetchNewsTest extends TestCase
             'created_at' => $searched_date,
         ]);
 
-        $searched_news_count = News::where('created_at', '=', $searched_date)->get()->count();
+        $searched_news = News::where('created_at', '=', $searched_date)->get();
 
         $response = $this->post(route('news.search'), [
             'created_at' => $searched_date,
-        ]);
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
 
-        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
     }
 
     /** @test */
@@ -80,40 +92,55 @@ class FetchNewsTest extends TestCase
 
         $url = route('news.search');
 
-        $searched_news_count = News::where('created_at', '>=', $first_searched_date)
+        $searched_news = News::where('created_at', '>=', $first_searched_date)
             ->where('created_at', '<=', $second_searched_date)
-            ->get()->count();
+            ->get();
         $response = $this->post($url, [
             'created_at_after' => $first_searched_date,
             'created_at_before' => $second_searched_date,
-        ]);
-        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
 
-        $searched_news_count = News::where('created_at', '<=', $first_searched_date)->get()->count();
+        $searched_news = News::where('created_at', '<=', $first_searched_date)->get();
         $response = $this->post($url, [
             'created_at_before' => $first_searched_date,
-        ]);
-        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
 
-        $searched_news_count = News::where('created_at', '>=', $second_searched_date)->get()->count();
+        $searched_news = News::where('created_at', '>=', $second_searched_date)->get();
         $response = $this->post($url, [
             'created_at_after' => $second_searched_date,
-        ]);
-        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
 
-        $searched_news_count = News::where('created_at', '>=', $after_first_before_second_searched_dates)->get()->count();
+        $searched_news = News::where('created_at', '>=', $after_first_before_second_searched_dates)->get();
         $response = $this->post($url, [
             'created_at_after' => $after_first_before_second_searched_dates,
-        ]);
-        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
 
-        $searched_news_count = News::where('created_at', '>=', $after_first_before_second_searched_dates)
+        $searched_news = News::where('created_at', '>=', $after_first_before_second_searched_dates)
             ->where('created_at', '<=', $second_searched_date)
-            ->get()->count();
+            ->get();
         $response = $this->post($url, [
             'created_at' => $after_first_before_second_searched_dates,
-        ]);
-        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
     }
 
     /** @test */
@@ -147,22 +174,28 @@ class FetchNewsTest extends TestCase
 
         $url = route('news.search');
 
-        $searched_news_count = News::where('created_at', '<=', $searched_date)
+        $searched_news = News::where('created_at', '<=', $searched_date)
             ->where('category_id', $categories[0]->id)
-            ->get()->count();
+            ->get();
         $response = $this->post($url, [
             'created_at_before' => $searched_date,
             'category_id' => $categories[0]->id,
-        ]);
-        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
 
-        $searched_news_count = News::where('created_at', '>=', $searched_date)
+        $searched_news = News::where('created_at', '>=', $searched_date)
             ->where('category_id', $categories[0]->id)
-            ->get()->count();
+            ->get();
         $response = $this->post($url, [
             'created_at_after' => $searched_date,
             'category_id' => $categories[0]->id,
-        ]);
-        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+        ])->assertStatus(200)
+            ->assertSee($searched_news[0]->title)
+            ->assertSee(Str::limit($searched_news[0]->body, 200, '...'))
+            ->assertSee($searched_news[0]->created_at->diffForHumans());
+        $this->assertEquals($searched_news->count(), $response->original->getData()['news']->count());
     }
 }

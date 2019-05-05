@@ -15,7 +15,7 @@ $factory->define(News::class, function (Faker $faker) {
         },
         'title' => $faker->unique()->sentence,
         'slug' => Str::slug($title, '-'),
-        'body' => $faker->paragraph,
+        'body' => $faker->paragraph(15),
         'event' => $faker->sentence,
         'location' => $faker->sentence,
     ];
