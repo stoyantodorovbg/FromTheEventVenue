@@ -21,5 +21,6 @@ Route::patch('/categories/{category}', 'CategoryController@update')->name('categ
 Route::delete('/categories/{category}', 'CategoryController@destroy')->name('categories.destroy');
 
 // News routes
+Route::post('/news/search', 'NewsController@search')->name('news.search');
 Route::resource('news', 'NewsController');
 

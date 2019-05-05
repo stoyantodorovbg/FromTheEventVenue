@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Traits\HasCategory;
+use App\Traits\SearchQueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 
 class Archivednews extends Model
 {
-    use HasCategory;
+    use HasCategory,
+        SearchQueryBuilder;
 
     /**
      * @var array

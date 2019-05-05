@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\Archivednews;
+use Illuminate\Support\Collection;
 use App\Http\Requests\NewsRequest;
 use App\Traits\ControllerUtilities;
 use App\Http\Requests\DestroyNewsRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class NewsController extends Controller
 {
@@ -18,7 +21,16 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        $news = News::all();
+
+        return view('news.index', compact('news'));
+    }
+
+    public function search()
+    {
+        $news = $this->createSearchQuery(request()->all());
+
+        return view('news.index', compact('news'));
     }
 
     /**
@@ -101,5 +113,22 @@ class NewsController extends Controller
         $news->delete();
 
         return response('News deleted', 200);
+    }
+
+    /**
+     * Filter data by status
+     *
+     * @param array $params
+     * @return Builder
+     */
+    protected function createSearchQuery(array $params): Builder
+    {
+        if(!isset($params['deleted'])) {
+            return News::addQueries($params);
+        }
+
+        unset($params['deleted']);
+
+        return Archivednews::addQueries($params);
     }
 }

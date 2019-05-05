@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Traits\HasCategory;
+use App\Traits\SearchQueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\AccessedViaSlugAttribute;
 
 class News extends Model
 {
-    use AccessedViaSlugAttribute, HasCategory;
+    use HasCategory,
+        SearchQueryBuilder,
+        AccessedViaSlugAttribute;
 
     /**
      * @var array
