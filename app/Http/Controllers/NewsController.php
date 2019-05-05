@@ -64,12 +64,14 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\News  $news
-     * @return \Illuminate\Http\Response
+     * @param News $news
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(News $news)
     {
-        //
+        $news->load('category');
+
+        return view('news.show', compact('news'));
     }
 
     /**

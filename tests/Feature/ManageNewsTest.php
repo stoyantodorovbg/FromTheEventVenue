@@ -239,4 +239,18 @@ class ManageNewsTest extends TestCase
             'note' => 'Fake news.',
         ]);
     }
+
+    /** @test */
+    public function the_news_can_be_viewed()
+    {
+        $news = factory(News::class)->create();
+
+        $this->get(route('news.show', $news))
+            ->assertStatus(200)
+            ->assertSee($news->category->title)
+            ->assertSee($news->title)
+            ->assertSee($news->body)
+            ->assertSee($news->event)
+            ->assertSee($news->location);
+    }
 }
