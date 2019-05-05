@@ -28,7 +28,7 @@ class NewsController extends Controller
 
     public function search()
     {
-        $news = $this->createSearchQuery(request()->all());
+        $news = $this->createSearchQuery(request()->all())->get();
 
         return view('news.index', compact('news'));
     }
@@ -123,11 +123,11 @@ class NewsController extends Controller
      */
     protected function createSearchQuery(array $params): Builder
     {
-        if(!isset($params['deleted'])) {
+        if(!isset($params['archived'])) {
             return News::addQueries($params);
         }
 
-        unset($params['deleted']);
+        unset($params['archived']);
 
         return Archivednews::addQueries($params);
     }

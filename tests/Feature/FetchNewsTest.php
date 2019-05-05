@@ -29,9 +29,10 @@ class FetchNewsTest extends TestCase
         factory(News::class, 10)->create();
 
         $searched_category = Category::find(1);
-        $url = route('news.search') . '?category_id=' . $searched_category->id;
 
-        $response = $this->post($url);
+        $response = $this->post(route('news.search'), [
+            'category_id' => $searched_category->id,
+        ]);
 
         $this->assertEquals($searched_category->news->count(), $response->original->getData()['news']->count());
     }
@@ -111,6 +112,56 @@ class FetchNewsTest extends TestCase
             ->get()->count();
         $response = $this->post($url, [
             'created_at' => $after_first_before_second_searched_dates,
+        ]);
+        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+    }
+
+    /** @test */
+    public function the_news_can_be_searched_by_category_and_time_interval_simultaniously()
+    {
+        $categories = factory(Category::class, 2)->create();
+
+        $before_searched_date = Carbon::parse('2016-05-25 00:00');
+        $searched_date = Carbon::parse('2017-05-25 00:00');
+        $after_searched_date = Carbon::parse('2017-06-25 00:00');
+
+        factory(News::class, 2)->create([
+            'category_id' => $categories[0]->id,
+            'created_at' => $before_searched_date,
+        ]);
+
+        factory(News::class, 3)->create([
+            'category_id' => $categories[1]->id,
+            'created_at' => $before_searched_date,
+        ]);
+
+        factory(News::class, 4)->create([
+            'category_id' => $categories[0]->id,
+            'created_at' => $after_searched_date,
+        ]);
+
+        factory(News::class, 5)->create([
+            'category_id' => $categories[1]->id,
+            'created_at' => $after_searched_date,
+        ]);
+
+        $url = route('news.search');
+
+        $searched_news_count = News::where('created_at', '<=', $searched_date)
+            ->where('category_id', $categories[0]->id)
+            ->get()->count();
+        $response = $this->post($url, [
+            'created_at_before' => $searched_date,
+            'category_id' => $categories[0]->id,
+        ]);
+        $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
+
+        $searched_news_count = News::where('created_at', '>=', $searched_date)
+            ->where('category_id', $categories[0]->id)
+            ->get()->count();
+        $response = $this->post($url, [
+            'created_at_after' => $searched_date,
+            'category_id' => $categories[0]->id,
         ]);
         $this->assertEquals($searched_news_count, $response->original->getData()['news']->count());
     }
