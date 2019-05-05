@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@home')->name('home');
 
 // Categories routes
 Route::post('/categories', 'CategoryController@store')->name('categories.store');
