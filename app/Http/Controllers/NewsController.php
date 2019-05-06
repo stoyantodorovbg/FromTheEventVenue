@@ -150,6 +150,7 @@ class NewsController extends Controller
         }
 
         unset($params['archived']);
+        session(['archived-news' => true]);
 
         return Archivednews::addQueries($params);
     }
