@@ -1983,6 +1983,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['categories', 'delete_criterias'],
   data: function data() {
@@ -1997,6 +2011,9 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.delete_criteria_display = false;
       }
+    },
+    addTimeToDate: function addTimeToDate(key) {
+      $('.created_at_' + key + '_hidden').val($('.created_at_' + key).val() + ' ' + $('.created_at_' + key + '_time').val());
     }
   }
 });
@@ -37558,7 +37575,65 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _vm._m(1)
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6 input-group mb-3" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "created_at_after_hidden",
+          attrs: { type: "hidden", name: "created_at_after" }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control created_at_after",
+          attrs: { type: "date" },
+          on: {
+            change: function($event) {
+              return _vm.addTimeToDate("after")
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control created_at_after_time",
+          attrs: { name: "created_at_after_time", type: "time" },
+          on: {
+            change: function($event) {
+              return _vm.addTimeToDate("after")
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6 input-group mb-3" }, [
+        _vm._m(2),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "created_at_before_hidden",
+          attrs: { type: "hidden", name: "created_at_before" }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control created_at_before",
+          attrs: { type: "date" },
+          on: {
+            change: function($event) {
+              return _vm.addTimeToDate("before")
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control created_at_before_time",
+          attrs: { name: "created_at_before_time", type: "time" },
+          on: {
+            change: function($event) {
+              return _vm.addTimeToDate("before")
+            }
+          }
+        })
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -37580,34 +37655,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6 input-group mb-3" }, [
-        _c("div", { staticClass: "input-group-prepend" }, [
-          _c("span", { staticClass: "input-group-text" }, [
-            _vm._v("News Created After")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { name: "created_at_after", type: "date" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6 input-group mb-3" }, [
-        _c("div", { staticClass: "input-group-prepend" }, [
-          _c(
-            "span",
-            { staticClass: "input-group-text", attrs: { id: "basic-addon3" } },
-            [_vm._v("Only News Before")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { name: "created_at_before", type: "date" }
-        })
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [
+        _vm._v("News Created After")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "span",
+        { staticClass: "input-group-text", attrs: { id: "basic-addon3" } },
+        [_vm._v("Only News Before")]
+      )
     ])
   }
 ]
