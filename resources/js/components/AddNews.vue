@@ -4,7 +4,8 @@
             <div class="container-news-fields col-md-12">
                 <news-fields
                     v-for="item in newsFields"
-                    :key="item.id"></news-fields>
+                    :key="item.id"
+                    :form_id="item.id"></news-fields>
             </div>
             <button type="button"
                     @click="addNewsFields"

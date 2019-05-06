@@ -9,7 +9,7 @@
 
                         <div class="input-group mb-3">
                             <select class="custom-select"
-                                    name="category_id">
+                                    :name="'news[' + form_id + '][category_id]'">
                                 <option>Select Category*</option>
                                 <option v-for="category in $parent.categories"
                                         :key="category.id"
@@ -19,7 +19,7 @@
                             </select>
                         </div>
                         <div class="input-group mb-3">
-                            <input name="title"
+                            <input :name="'news[' + form_id + '][title]'"
                                    type="text"
                                    placeholder="News Title*"
                                    class="form-control"
@@ -27,21 +27,21 @@
                                    aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3">
-                            <textarea name="body"
+                            <textarea :name="'news[' + form_id + '][body]'"
                                       placeholder="News Content*"
                                       class="form-control"
                                       rows="4"
                                       aria-label="With textarea"></textarea>
                         </div>
                         <div class="input-group mb-3">
-                            <textarea name="event"
+                            <textarea :name="'news[' + form_id + '][event]'"
                                       placeholder="News Event"
                                       class="form-control"
                                       rows="2"
                                       aria-label="With textarea"></textarea>
                         </div>
                         <div class="input-group mb-3">
-                            <textarea name="location"
+                            <textarea :name="'news[' + form_id + '][location]'"
                                       placeholder="News Location"
                                       class="form-control"
                                       rows="2"
@@ -56,6 +56,8 @@
 
 <script>
     export default {
-
+        props: [
+            'form_id',
+        ]
     }
 </script>
