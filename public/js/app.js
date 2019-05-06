@@ -37193,7 +37193,7 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-success mt-3",
+          staticClass: "btn btn-success mt-3 mb-4",
           attrs: { type: "button" },
           on: { click: _vm.addNewsFields }
         },
@@ -37229,7 +37229,7 @@ var render = function() {
       _c("div", { staticClass: "col-md-8" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header text-center" }, [
-            _vm._v("NEWS")
+            _vm._v("NEWS FORM " + _vm._s(_vm.form_id))
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body text-center" }, [
