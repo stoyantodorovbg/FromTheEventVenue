@@ -13,10 +13,19 @@
                     method="POST">
                     @csrf
                     <add-news
-                        :categories="{{ $categories }}"></add-news>
+                        :categories="{{ $categories }}"
+                        :old_inputs_forms="{{ json_encode(session()->getOldInput()) }}"
+                        :news_forms_count="{{ isset(session()->getOldInput()['news']) ? count(session()->getOldInput()['news']) : 1}}"
+                    ></add-news>
 
                     @include('partials.validation-errors')
 
+                    <a href="{{ route('news.index') }}">
+                        <button type="button"
+                                class="btn btn-light font-weight-bolder mt-4">
+                            Cancel
+                        </button>
+                    </a>
                     <button type="submit"
                             class="btn btn-primary font-weight-bolder mt-4">
                         SUBMIT NEWS
