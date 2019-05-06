@@ -47,17 +47,31 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">News Created After</span>
                 </div>
-                <input name="created_at_after"
-                       type="date"
-                       class="form-control">
+                <input type="hidden"
+                       name="created_at_after"
+                       class="created_at_after_hidden">
+                <input type="date"
+                       class="form-control created_at_after"
+                       @change="addTimeToDate('after')">
+                <input name="created_at_after_time"
+                       type="time"
+                       class="form-control created_at_after_time"
+                       @change="addTimeToDate('after')">
             </div>
             <div class="col-md-6 input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">Only News Before</span>
                 </div>
-                <input name="created_at_before"
-                       type="date"
-                       class="form-control">
+                <input type="hidden"
+                       name="created_at_before"
+                       class="created_at_before_hidden">
+                <input type="date"
+                       class="form-control created_at_before"
+                       @change="addTimeToDate('before')">
+                <input name="created_at_before_time"
+                       type="time"
+                       class="form-control created_at_before_time"
+                       @change="addTimeToDate('before')">
             </div>
         </div>
     </div>
@@ -84,6 +98,10 @@
                     this.delete_criteria_display = false;
                 }
             },
+
+            addTimeToDate(key) {
+                $('.created_at_' + key + '_hidden').val($('.created_at_' + key).val() + ' ' + $('.created_at_' + key + '_time').val());
+            }
         },
     }
 </script>
