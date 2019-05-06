@@ -181,10 +181,12 @@ class ManageNewsTest extends TestCase
             ],
         ];
 
-        $this->patch(route('news.update', $news->slug), $news_data)
-            ->assertStatus(200);
+        $this->patch(route('news.update', $news), $news_data)
+            ->assertStatus(302)
+            ->assertRedirect(route('news.show', $news));
 
         $this->assertDatabaseHas('news', [
+            'title' => $news->title,
             'body' => 'Updated news body',
             'event' => 'Updated event',
             'location' => 'Updated location',
@@ -278,7 +280,7 @@ class ManageNewsTest extends TestCase
     }
 
     /** @test */
-    public function the_create_news_can_be_accessed()
+    public function the_create_news_form_can_be_accessed()
     {
         $categories = factory(Category::class, 10)->create();
 
@@ -287,5 +289,24 @@ class ManageNewsTest extends TestCase
             ->assertSee('CREATE NEWS');
 
         $this->assertEquals($categories->count(), $response->original->getData()['categories']->count());
+    }
+
+    /** @test */
+    public function the_edit_news_form_can_be_accessed()
+    {
+        $categories = factory(Category::class, 10)->create();
+
+        $news = factory(News::class)->create();
+
+        $response = $this->get(route('news.edit', $news))
+            ->assertStatus(200)
+            ->assertSee('EDIT NEWS')
+            ->assertSee($news->category->title)
+            ->assertSee($news->title)
+            ->assertSee($news->body)
+            ->assertSee($news->event)
+            ->assertSee($news->location);
+
+        $this->assertEquals($categories->count() + 1, $response->original->getData()['categories']->count());
     }
 }

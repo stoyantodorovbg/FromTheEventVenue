@@ -13,7 +13,7 @@ $factory->define(News::class, function (Faker $faker) {
         'category_id' => function() {
             return factory(\App\Models\Category::class)->create()->id;
         },
-        'title' => $faker->unique()->sentence,
+        'title' => $title,
         'slug' => Str::slug($title, '-'),
         'body' => $faker->paragraph(15),
         'event' => $faker->sentence,

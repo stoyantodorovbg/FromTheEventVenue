@@ -84,7 +84,9 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        //
+        $categories = Category::all();
+
+        return view('news.edit', compact('news', 'categories'));
     }
 
     /**
@@ -100,7 +102,7 @@ class NewsController extends Controller
 
         $news->update($data);
 
-        return response($news, 200);
+        return redirect()->route('news.show', $news);
     }
 
     /**
