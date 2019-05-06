@@ -253,4 +253,16 @@ class ManageNewsTest extends TestCase
             ->assertSee($news->event)
             ->assertSee($news->location);
     }
+
+    /** @test */
+    public function the_create_news_can_be_accessed()
+    {
+        $categories = factory(Category::class, 10)->create();
+
+        $response = $this->get(route('news.create'))
+            ->assertStatus(200)
+            ->assertSee('CREATE NEWS');
+
+        $this->assertEquals($categories->count(), $response->original->getData()['categories']->count());
+    }
 }

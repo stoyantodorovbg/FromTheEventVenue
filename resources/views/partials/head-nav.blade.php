@@ -1,5 +1,5 @@
 <header class="card-header">
-    <div class="row">
+    <div class="row font-weight-bolder">
         <div class="col-6">
             <a href="{{ route('home') }}">
                 FROM THE EVENT VENUE

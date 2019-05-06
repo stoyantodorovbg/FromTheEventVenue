@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\Category;
 use App\Models\Archivednews;
-use Illuminate\Support\Collection;
 use App\Http\Requests\NewsRequest;
 use App\Traits\ControllerUtilities;
 use App\Http\Requests\DestroyNewsRequest;
@@ -40,7 +40,9 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('news.create', compact('categories'));
     }
 
     /**

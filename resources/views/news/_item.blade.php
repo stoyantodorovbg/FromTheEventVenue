@@ -1,6 +1,6 @@
 <div class="card mb-3">
     <div class="card-header">
-        <a href="{{ route('news.show', $item) }}">
+        <a class="text-uppercase" href="{{ route('news.show', $item) }}">
             {{ $item->title }}
         </a>
     </div>
