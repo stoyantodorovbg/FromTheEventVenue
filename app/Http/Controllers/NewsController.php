@@ -60,7 +60,7 @@ class NewsController extends Controller
             $news[] = News::create($news_data);
         }
 
-        return response($news, 200);
+        return redirect()->route('news.index');
     }
 
     /**

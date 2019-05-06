@@ -9,7 +9,9 @@
                 <h1 class="text-center">
                     CREATE NEWS
                 </h1>
-                <form action="{{ route('news.store') }}">
+                <form action="{{ route('news.store') }}"
+                    method="POST">
+                    @csrf
                     <add-news
                         :categories="{{ $categories }}"></add-news>
 

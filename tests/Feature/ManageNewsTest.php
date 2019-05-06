@@ -15,13 +15,34 @@ class ManageNewsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function create_news_request_must_contains_an_non_empty_array_with_key_news()
+    {
+        $all_news = factory(News::class)->make()->toArray();
+
+        $this->post(route('news.store'), $all_news)
+            ->assertStatus(302)
+            ->assertSessionHasErrors('news');
+        $this->assertCount(0, News::all());
+
+        $all_news = [
+            'news' => [],
+        ];
+
+        $this->post(route('news.store'), $all_news)
+            ->assertStatus(302)
+            ->assertSessionHasErrors('news');
+    }
+
+    /** @test */
     public function create_one_news()
     {
         $all_news = [];
 
         $all_news['news'][] = factory(News::class)->make()->toArray();
 
-        $this->post(route('news.store'), $all_news)->assertStatus(200);
+        $this->post(route('news.store'), $all_news)
+            ->assertStatus(302)
+            ->assertRedirect(route('news.index'));
         $this->assertCount(1, News::all());
     }
 
@@ -33,7 +54,9 @@ class ManageNewsTest extends TestCase
         $all_news['news'][] = factory(News::class)->make()->toArray();
         $all_news['news'][] = factory(News::class)->make()->toArray();
 
-        $this->post(route('news.store'), $all_news)->assertStatus(200);
+        $this->post(route('news.store'), $all_news)
+            ->assertStatus(302)
+            ->assertRedirect(route('news.index'));
         $this->assertCount(2, News::all());
     }
 

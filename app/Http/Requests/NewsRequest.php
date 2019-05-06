@@ -26,6 +26,7 @@ class NewsRequest extends FormRequest
         $news_id = $this->isMethod('PATCH') ? $this->route('news')->id : '';
 
         return [
+            'news' => 'required|array|min:1',
             'news.*.category_id' => 'required|int|exists:categories,id|min:1',
             'news.*.title' => 'required|string|max:255|unique:news,title,' . $news_id,
             'news.*.body' => 'required|string|max:65000',
