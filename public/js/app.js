@@ -1782,24 +1782,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     NewsFields: _NewsFields__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['categories'],
+  props: ['categories', 'old_inputs_forms', 'news_forms_count'],
   data: function data() {
     return {
-      newsFields: [{
-        id: 1
-      }]
+      newsForms: this.setInitialNewsForms()
     };
   },
   methods: {
+    setInitialNewsForms: function setInitialNewsForms() {
+      var counter = 0;
+      var newsForms = [];
+
+      while (counter < this.news_forms_count) {
+        newsForms.push({
+          id: counter
+        });
+        counter++;
+      }
+
+      return newsForms;
+    },
     addNewsFields: function addNewsFields() {
-      this.newsFields.push({
-        id: this.newsFields.length + 1
+      this.newsForms.push({
+        id: this.newsForms.length
       });
+    },
+    setOldInputForm: function setOldInputForm(form_id) {
+      return this.old_inputs_forms.news ? this.old_inputs_forms.news[form_id] : false;
     }
   }
 });
@@ -1871,8 +1886,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['form_id']
+  props: ['form_id', 'old_inputs_form'],
+  methods: {
+    getOldInputValue: function getOldInputValue(input_name) {
+      return this.old_inputs_form ? this.old_inputs_form[input_name] : '';
+    },
+    isOptionSelected: function isOptionSelected(option_id) {
+      if (this.old_inputs_form) {
+        return this.old_inputs_form['category_id'] == option_id;
+      }
+
+      return false;
+    }
+  }
 });
 
 /***/ }),
@@ -37181,10 +37213,13 @@ var render = function() {
       _c(
         "div",
         { staticClass: "container-news-fields col-md-12" },
-        _vm._l(_vm.newsFields, function(item) {
+        _vm._l(_vm.newsForms, function(item) {
           return _c("news-fields", {
             key: item.id,
-            attrs: { form_id: item.id }
+            attrs: {
+              form_id: item.id,
+              old_inputs_form: _vm.setOldInputForm(item.id)
+            }
           })
         }),
         1
@@ -37229,7 +37264,7 @@ var render = function() {
       _c("div", { staticClass: "col-md-8" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header text-center" }, [
-            _vm._v("NEWS FORM " + _vm._s(_vm.form_id))
+            _vm._v("NEWS FORM " + _vm._s(_vm.form_id + 1))
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body text-center" }, [
@@ -37241,12 +37276,20 @@ var render = function() {
                   attrs: { name: "news[" + _vm.form_id + "][category_id]" }
                 },
                 [
-                  _c("option", [_vm._v("Select Category*")]),
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Select Category*")
+                  ]),
                   _vm._v(" "),
                   _vm._l(_vm.$parent.categories, function(category) {
                     return _c(
                       "option",
-                      { key: category.id, domProps: { value: category.id } },
+                      {
+                        key: category.id,
+                        domProps: {
+                          selected: _vm.isOptionSelected(category.id),
+                          value: category.id
+                        }
+                      },
                       [
                         _vm._v(
                           "\n                                " +
@@ -37270,7 +37313,8 @@ var render = function() {
                   placeholder: "News Title*",
                   "aria-label": "title",
                   "aria-describedby": "basic-addon1"
-                }
+                },
+                domProps: { value: _vm.getOldInputValue("title") }
               })
             ]),
             _vm._v(" "),
@@ -37282,7 +37326,8 @@ var render = function() {
                   placeholder: "News Content*",
                   rows: "4",
                   "aria-label": "With textarea"
-                }
+                },
+                domProps: { value: _vm.getOldInputValue("body") }
               })
             ]),
             _vm._v(" "),
@@ -37294,7 +37339,8 @@ var render = function() {
                   placeholder: "News Event",
                   rows: "2",
                   "aria-label": "With textarea"
-                }
+                },
+                domProps: { value: _vm.getOldInputValue("event") }
               })
             ]),
             _vm._v(" "),
@@ -37306,7 +37352,8 @@ var render = function() {
                   placeholder: "News Location",
                   rows: "2",
                   "aria-label": "With textarea"
-                }
+                },
+                domProps: { value: _vm.getOldInputValue("location") }
               })
             ])
           ])
