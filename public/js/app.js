@@ -1781,6 +1781,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1870,7 +1871,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['form_id']
+});
 
 /***/ }),
 
@@ -37179,7 +37182,10 @@ var render = function() {
         "div",
         { staticClass: "container-news-fields col-md-12" },
         _vm._l(_vm.newsFields, function(item) {
-          return _c("news-fields", { key: item.id })
+          return _c("news-fields", {
+            key: item.id,
+            attrs: { form_id: item.id }
+          })
         }),
         1
       ),
@@ -37232,7 +37238,7 @@ var render = function() {
                 "select",
                 {
                   staticClass: "custom-select",
-                  attrs: { name: "category_id" }
+                  attrs: { name: "news[" + _vm.form_id + "][category_id]" }
                 },
                 [
                   _c("option", [_vm._v("Select Category*")]),
@@ -37255,86 +37261,61 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _c("div", { staticClass: "input-group mb-3" }, [
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  name: "news[" + _vm.form_id + "][title]",
+                  type: "text",
+                  placeholder: "News Title*",
+                  "aria-label": "title",
+                  "aria-describedby": "basic-addon1"
+                }
+              })
+            ]),
             _vm._v(" "),
-            _vm._m(1),
+            _c("div", { staticClass: "input-group mb-3" }, [
+              _c("textarea", {
+                staticClass: "form-control",
+                attrs: {
+                  name: "news[" + _vm.form_id + "][body]",
+                  placeholder: "News Content*",
+                  rows: "4",
+                  "aria-label": "With textarea"
+                }
+              })
+            ]),
             _vm._v(" "),
-            _vm._m(2),
+            _c("div", { staticClass: "input-group mb-3" }, [
+              _c("textarea", {
+                staticClass: "form-control",
+                attrs: {
+                  name: "news[" + _vm.form_id + "][event]",
+                  placeholder: "News Event",
+                  rows: "2",
+                  "aria-label": "With textarea"
+                }
+              })
+            ]),
             _vm._v(" "),
-            _vm._m(3)
+            _c("div", { staticClass: "input-group mb-3" }, [
+              _c("textarea", {
+                staticClass: "form-control",
+                attrs: {
+                  name: "news[" + _vm.form_id + "][location]",
+                  placeholder: "News Location",
+                  rows: "2",
+                  "aria-label": "With textarea"
+                }
+              })
+            ])
           ])
         ])
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group mb-3" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: {
-          name: "title",
-          type: "text",
-          placeholder: "News Title*",
-          "aria-label": "title",
-          "aria-describedby": "basic-addon1"
-        }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group mb-3" }, [
-      _c("textarea", {
-        staticClass: "form-control",
-        attrs: {
-          name: "body",
-          placeholder: "News Content*",
-          rows: "4",
-          "aria-label": "With textarea"
-        }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group mb-3" }, [
-      _c("textarea", {
-        staticClass: "form-control",
-        attrs: {
-          name: "event",
-          placeholder: "News Event",
-          rows: "2",
-          "aria-label": "With textarea"
-        }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group mb-3" }, [
-      _c("textarea", {
-        staticClass: "form-control",
-        attrs: {
-          name: "location",
-          placeholder: "News Location",
-          rows: "2",
-          "aria-label": "With textarea"
-        }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
