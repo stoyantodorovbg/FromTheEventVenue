@@ -75,6 +75,8 @@ trait SearchQueryBuilder
     {
         $model_params = [];
 
+        $params = self::removeNullKeys($params);
+
         foreach ($params as $key => $value) {
             $model_params[] = [
                 'request_key' => $key,
@@ -84,5 +86,23 @@ trait SearchQueryBuilder
         }
 
         return $model_params;
+    }
+
+    /**
+     * Remove the keys without values
+     *
+     * @param array $params
+     * @return array
+     */
+    protected static function removeNullKeys(array $params): array
+    {
+        $processed_data = [];
+        foreach ($params as $key => $value) {
+            if($value !== NULL) {
+                $processed_data[$key] = $value;
+            }
+        }
+
+        return $processed_data;
     }
 }

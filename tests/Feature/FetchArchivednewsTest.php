@@ -23,7 +23,7 @@ class FetchArchivednewsTest extends TestCase
             'archived' => 1,
         ]);
 
-        $this->assertEquals(12, $response->original->getData()['news']->count());
+        $this->assertEquals($archived_news->count(), $response->original->getData()['news']->count());
     }
 
     /** @test */

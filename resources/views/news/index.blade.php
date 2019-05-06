@@ -6,6 +6,7 @@
     <div>
         <div class="row justify-content-center">
             <div class="col-12">
+                @include('news._search-form')
                 <h1 class="text-center">
                     {{ $news->count() }} NEWS
                 </h1>

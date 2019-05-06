@@ -30,8 +30,8 @@ class NewsRequest extends FormRequest
             'news.*.category_id' => 'required|int|exists:categories,id|min:1',
             'news.*.title' => 'required|string|max:255|unique:news,title,' . $news_id,
             'news.*.body' => 'required|string|max:65000',
-            'news.*.event' => 'string|max:65000',
-            'news.*.location' => 'string|max:65000',
+            'news.*.event' => 'string|max:65000|nullable',
+            'news.*.location' => 'string|max:65000|nullable',
         ];
     }
 }

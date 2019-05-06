@@ -8,6 +8,7 @@ use App\Models\Archivednews;
 use App\Models\Deletecriteria;
 use App\Http\Requests\NewsRequest;
 use App\Traits\ControllerUtilities;
+use App\Http\Requests\SearchRequest;
 use App\Http\Requests\DestroyNewsRequest;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -22,16 +23,23 @@ class NewsController extends Controller
      */
     public function index()
     {
+        $categories = Category::all();
+        $delete_criterias = Deletecriteria::all();
+
+
         $news = News::all();
 
-        return view('news.index', compact('news'));
+        return view('news.index', compact('news', 'categories', 'delete_criterias'));
     }
 
-    public function search()
+    public function search(SearchRequest $request)
     {
-        $news = $this->createSearchQuery(request()->all())->get();
+        $categories = Category::all();
+        $delete_criterias = Deletecriteria::all();
 
-        return view('news.index', compact('news'));
+        $news = $this->createSearchQuery($request->validated())->get();
+
+        return view('news.index', compact('news', 'categories', 'delete_criterias'));
     }
 
     /**
@@ -137,7 +145,7 @@ class NewsController extends Controller
      */
     protected function createSearchQuery(array $params): Builder
     {
-        if(!isset($params['archived'])) {
+        if(!isset($params['archived']) || (isset($params['archived']) && !$params['archived'])) {
             return News::addQueries($params);
         }
 
