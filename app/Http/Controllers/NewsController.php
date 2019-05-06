@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Models\Category;
 use App\Models\Archivednews;
+use App\Models\Deletecriteria;
 use App\Http\Requests\NewsRequest;
 use App\Traits\ControllerUtilities;
 use App\Http\Requests\DestroyNewsRequest;
@@ -105,20 +106,27 @@ class NewsController extends Controller
         return redirect()->route('news.show', $news);
     }
 
+    public function delete(News $news)
+    {
+        $delete_criterias = Deletecriteria::all();
+
+        return view('news.delete', compact('news', 'delete_criterias'));
+    }
+
     /**
      * Remove the specified resource from storage
      *
-     * @param DestroyNewsRequest $requestNews
+     * @param DestroyNewsRequest $request
      * @param News $news
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(DestroyNewsRequest $requestNews, News $news)
+    public function destroy(DestroyNewsRequest $request, News $news)
     {
-        $news->archive($requestNews->validated());
+        $news->archive($request->validated());
         $news->delete();
 
-        return response('News deleted', 200);
+        return redirect()->route('news.index');
     }
 
     /**

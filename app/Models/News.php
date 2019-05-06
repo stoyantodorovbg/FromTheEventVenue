@@ -27,6 +27,7 @@ class News extends Model
     {
         $data = array_merge($data, $this->toArray());
         unset($data['slug']);
+        unset($data['id']);
 
         Archivednews::create($data);
     }

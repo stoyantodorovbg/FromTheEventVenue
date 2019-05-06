@@ -20,5 +20,6 @@ Route::delete('/categories/{category}', 'CategoryController@destroy')->name('cat
 
 // News routes
 Route::post('/news/search', 'NewsController@search')->name('news.search');
+Route::get('/news/delete/{news}', 'NewsController@delete')->name('news.delete');
 Route::resource('news', 'NewsController');
 

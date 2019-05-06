@@ -11,9 +11,10 @@
                 </h1>
                 <form action="{{ route('news.update', $news) }}"
                       method="POST">
+
                     @csrf
                     @method('PATCH')
-                    @include('news._form-fields')
+                    @include('news._edit-form-fields')
                     @include('partials.validation-errors')
 
                     <a href="{{ route('news.show', $news) }}">
@@ -26,6 +27,12 @@
                             class="btn btn-primary font-weight-bolder mt-4">
                         EDIT NEWS
                     </button>
+                    <a href="{{ route('news.delete', $news) }}">
+                        <button type="button"
+                                class="btn btn-danger font-weight-bolder mt-4">
+                            Delete news
+                        </button>
+                    </a>
                 </form>
             </div>
         </div>

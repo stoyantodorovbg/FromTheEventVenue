@@ -229,7 +229,8 @@ class ManageNewsTest extends TestCase
         $this->delete(route('news.destroy', $news->slug), [
             'deletecriteria_id' => $deletecriteria->id,
             'note' => 'Fake news.',
-        ])->assertStatus(200);
+        ])->assertStatus(302)
+            ->assertRedirect(route('news.index'));
 
         $this->assertDatabaseMissing('news', [
             'title' => $news->title,
@@ -308,5 +309,18 @@ class ManageNewsTest extends TestCase
             ->assertSee($news->location);
 
         $this->assertEquals($categories->count() + 1, $response->original->getData()['categories']->count());
+    }
+
+    /** @test */
+    public function the_delete_news_form_can_be_accessed()
+    {
+        $delete_criterias = factory(Deletecriteria::class)->create();
+        $news = factory(News::class)->create();
+
+        $response = $this->get(route('news.delete', $news))
+            ->assertStatus(200)
+            ->assertSee($news->title);
+
+        $this->assertEquals($delete_criterias->count(), $response->original->getData()['delete_criterias']->count());
     }
 }
