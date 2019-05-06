@@ -15,6 +15,8 @@
                     <add-news
                         :categories="{{ $categories }}"></add-news>
 
+                    @include('partials.validation-errors')
+
                     <button type="submit"
                             class="btn btn-primary font-weight-bolder mt-4">
                         SUBMIT NEWS

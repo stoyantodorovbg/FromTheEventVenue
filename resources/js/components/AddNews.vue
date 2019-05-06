@@ -9,7 +9,7 @@
             </div>
             <button type="button"
                     @click="addNewsFields"
-                    class="btn btn-success mt-3">
+                    class="btn btn-success mt-3 mb-4">
                 Add Another News
             </button>
         </div>

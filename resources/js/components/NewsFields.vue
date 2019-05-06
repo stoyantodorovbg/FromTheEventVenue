@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header text-center">NEWS</div>
+                    <div class="card-header text-center">NEWS FORM {{ form_id }}</div>
 
                     <div class="card-body text-center">
 
