@@ -36,7 +36,7 @@ class NewsTableSeeder extends Seeder
         while ($category_id <= 10) {
             factory(\App\Models\News::class, 2)->create([
                 'category_id' => $category_id,
-                'created_at' => Carbon::parse('2019-05-25 00:00'),
+                'created_at' => Carbon::parse('2019-05-05 00:00'),
             ]);
 
             $category_id++;
