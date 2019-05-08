@@ -27,7 +27,7 @@ class NewsController extends Controller
         $delete_criterias = Deletecriteria::all();
 
 
-        $news = News::all();
+        $news = News::orderBy('created_at', 'DESC')->get();
 
         return view('news.index', compact('news', 'categories', 'delete_criterias'));
     }
@@ -37,7 +37,9 @@ class NewsController extends Controller
         $categories = Category::all();
         $delete_criterias = Deletecriteria::all();
 
-        $news = $this->createSearchQuery($request->validated())->get();
+        $news = $this->createSearchQuery($request->validated())
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view('news.index', compact('news', 'categories', 'delete_criterias'));
     }

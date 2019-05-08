@@ -41,7 +41,7 @@ class ArchivednewsTableSeeder extends Seeder
             factory(\App\Models\Archivednews::class, 2)->create([
                 'category_id' => $category_id,
                 'deletecriteria_id' => rand(1, 3),
-                'created_at' => Carbon::parse('2019-05-25 00:00'),
+                'created_at' => Carbon::parse('2019-05-05 00:00'),
 
             ]);
 
